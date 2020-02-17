@@ -8,9 +8,10 @@ VOICES_PER_PAGE = 10
 
 def create_app(test_config=None):
     app = Flask(__name__,  static_folder='public', static_url_path='')
+    cors = CORS(app, resources={r"*": {"origins": "*"}})
     setup_db(app)
     migrate=Migrate(app, db)
-    cors = CORS(app, resources={r"*": {"origins": "*"}})
+
 
     @app.route('/static/<path:path>')
     def send_js(path):
@@ -67,7 +68,7 @@ def create_app(test_config=None):
             })
 
     # voice
-    @app.route('')
+    @app.route('/voices')
     def get_voices_by_page():
         page = request.args.get('page', 1, type=int)
         page_size = request.args.get('page_size', VOICES_PER_PAGE, type=int)
@@ -84,7 +85,7 @@ def create_app(test_config=None):
             })
 
 
-    @app.route('', methods=['POST'])
+    @app.route('/voices', methods=['POST'])
     def create_voice():
         data = request.json
 
@@ -104,7 +105,7 @@ def create_app(test_config=None):
 
 
 
-    @app.route('/<voice_id>', methods=['DELETE'])
+    @app.route('/voices/<voice_id>', methods=['DELETE'])
     def delete_voice(voice_id):
         data = request.json
 
@@ -118,14 +119,15 @@ def create_app(test_config=None):
             })
 
 
-    @app.route('/<voice_id>/like', methods=['POST'])
+    @app.route('/voices/<voice_id>/like', methods=['POST'])
     def like_toggle(voice_id):
         data = request.json
         user_id = data['user_id']
         like = Like.query.filter_by(voice_id=voice_id, user_id=user_id).one_or_none()
-        res_like = None
+        formated = None
         if like is None:
             like = Like(voice_id=voice_id, user_id=user_id, like=True)
+            formated = like.insert()
             res_like = True
         else :
             like.delete()
@@ -133,7 +135,7 @@ def create_app(test_config=None):
 
         return jsonify({
                 'success':True,
-                'like':res_like
+                'like':formated
             })
 
     @app.route('/', defaults={'path': ''})
