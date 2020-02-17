@@ -90,7 +90,7 @@ def create_app(test_config=None):
     def create_voice():
         data = request.json
 
-        voice = Voice(text=data['text'], author_id=data['author_id'], replying_to=data.get('replying_to', None), , create_time=datetime.now())
+        voice = Voice(text=data['text'], author_id=data['author_id'], replying_to=data.get('replying_to', None), create_time=datetime.now())
         pictures = []
         if data.get('pictures', None):
             for picture_url in data['pictures']:
