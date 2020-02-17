@@ -1,5 +1,4 @@
 import os, sys
-from datetime import datetime
 from sqlalchemy import Column, String, Integer, Boolean, DateTime
 from flask_sqlalchemy import SQLAlchemy
 from flask import abort
@@ -89,7 +88,7 @@ class User(db.Model, Data_Population):
     nickname = db.Column(String(12), nullable=False)
     picture_url = db.Column(String, nullable=False)
 
-    create_time=db.Column(DateTime, default=datetime.now())
+    create_time=db.Column(DateTime, nullable=False)
 
     voices = db.relationship('Voice', cascade="all,delete", backref='parent_user', lazy=True) 
     likes = db.relationship('Like', cascade="all,delete", backref='parent_user', lazy=True)      
@@ -111,7 +110,7 @@ class Voice(db.Model, Data_Population):
     author_id=db.Column(Integer, db.ForeignKey('users.id'), nullable=False)
     replying_to=db.Column(Integer, db.ForeignKey('voices.id'), nullable=True)
 
-    create_time=db.Column(DateTime, default=datetime.now())
+    create_time=db.Column(DateTime, nullable=False)
 
     pictures = db.relationship('Picture', cascade="all,delete", backref='parent_voice', lazy=True)
     likes = db.relationship('Like', cascade="all,delete", backref='parent_voice', lazy=True)

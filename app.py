@@ -3,6 +3,7 @@ import os
 from models import db, setup_db, User, Voice, Like, Picture
 from flask_migrate import Migrate
 from flask_cors import CORS
+from datetime import datetime
 
 VOICES_PER_PAGE = 10
 
@@ -33,7 +34,7 @@ def create_app(test_config=None):
                     'user':user.format()
                 })
 
-        user = User(auth0_user_id=auth0_user_id, nickname=nickname, picture_url=picture_url)
+        user = User(auth0_user_id=auth0_user_id, nickname=nickname, picture_url=picture_url, create_time=datetime.now())
         formated_user = user.insert()
         return jsonify({
                 'success':True,
@@ -89,7 +90,7 @@ def create_app(test_config=None):
     def create_voice():
         data = request.json
 
-        voice = Voice(text=data['text'], author_id=data['author_id'], replying_to=data.get('replying_to', None))
+        voice = Voice(text=data['text'], author_id=data['author_id'], replying_to=data.get('replying_to', None), , create_time=datetime.now())
         pictures = []
         if data.get('pictures', None):
             for picture_url in data['pictures']:
