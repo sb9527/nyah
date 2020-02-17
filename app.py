@@ -67,7 +67,7 @@ def create_app(test_config=None):
             })
 
     # voice
-    @app.route('/voices')
+    @app.route('')
     def get_voices_by_page():
         page = request.args.get('page', 1, type=int)
         page_size = request.args.get('page_size', VOICES_PER_PAGE, type=int)
@@ -84,7 +84,7 @@ def create_app(test_config=None):
             })
 
 
-    @app.route('/voices', methods=['POST'])
+    @app.route('', methods=['POST'])
     def create_voice():
         data = request.json
 
@@ -104,7 +104,7 @@ def create_app(test_config=None):
 
 
 
-    @app.route('/voices/<voice_id>', methods=['DELETE'])
+    @app.route('/<voice_id>', methods=['DELETE'])
     def delete_voice(voice_id):
         data = request.json
 
@@ -118,7 +118,7 @@ def create_app(test_config=None):
             })
 
 
-    @app.route('/voices/<voice_id>/like', methods=['POST'])
+    @app.route('/<voice_id>/like', methods=['POST'])
     def like_toggle(voice_id):
         data = request.json
         user_id = data['user_id']
