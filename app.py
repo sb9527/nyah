@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, abort, send_from_directory
 import os
-from models import db, setup_db, User, Voice, Like, Picture
+from .db.models import db, setup_db, User, Voice, Like, Picture
 from flask_migrate import Migrate
 from flask_cors import CORS
 from datetime import datetime
@@ -9,7 +9,7 @@ VOICES_PER_PAGE = 10
 
 def create_app(test_config=None):
     app = Flask(__name__,  static_folder='public', static_url_path='')
-    cors = CORS(app, resources={r"*": {"origins": "*"}})
+    cors = CORS(app, resources={r"*": {"origins": "http://localhost:3000"}})
     setup_db(app)
     migrate=Migrate(app, db)
 

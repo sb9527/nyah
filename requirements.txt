@@ -6,3 +6,4 @@ Flask-Migrate
 flask-cors
 flask-script
 psycopg2-binary
+python-jose-cryptodome==1.3.2
